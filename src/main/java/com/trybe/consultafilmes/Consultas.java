@@ -1,10 +1,10 @@
 package com.trybe.consultafilmes;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -111,16 +111,21 @@ public class Consultas {
     return filmes.stream()
         .filter(
             film -> film.diretores.stream().anyMatch(director -> film.atores.contains(director)))
-        .sorted(Comparator.comparing(Filme::anoDeLancamento).reversed())
+        .sorted(Comparator.comparing(Filme::getAnoDeLancamento).reversed())
         .distinct()
         .collect(Collectors.toUnmodifiableList());
     // stream() -> filter() -> sorted() ->
     // collect(Collectors.toUnmodifiableList())
     // stream() -> substitui um iterador como for ou while
     // filter() -> filtra o set gerado, chave que está entre os valores.
+    // anymatch() -> retorna true se pelo menos um dos itens do stream for igual ao
+    // valor passado
     // sorted() -> ordena o set gerado, chave que está entre os valores.
+    // distinct() -> retorna um set com os valores únicos.
+    // reversed() -> inverte a ordem dos itens do set gerado.
     // collect(Collectors.toUnmodifiableList()) -> retorna um set com os valores.
     // https://receitasdecodigo.com.br/java/java-8-stream-anymatch-com-exemplos
+    // https://www.techiedelight.com/sort-list-of-objects-using-comparator-java/
   }
 
   /**
@@ -131,6 +136,27 @@ public class Consultas {
    * filmes que se encaixam na categoria da chave correspondente.
    */
   public Map<String, Set<Filme>> filmesLancadosNoAnoAgrupadosPorCategoria(int ano) {
-    return emptyMap(); // TODO: Implementar (bônus).
+    // Recupera todas as categorias com filmes naquele ano e cria uma lista.
+    List<String> categorias =
+        filmes.stream()
+            .filter(film -> film.anoDeLancamento == ano)
+            .flatMap(cat -> cat.categorias.stream())
+            .distinct()
+            .collect(Collectors.toList());
+
+    // Cria um mapa vazio para o resultado da busca.
+    Map<String, Set<Filme>> result = new HashMap<String, Set<Filme>>();
+
+    // Percorre a lista de categorias.
+    for (String categoria : categorias) {
+      // Cria um set vazio para a categoria atual.
+      Set<Filme> G =
+          filmes.stream()
+              .filter(F -> F.anoDeLancamento == ano) // Filtra os filmes do ano atual.
+              .filter(H -> H.categorias.contains(categoria)) // Filtra os filmes da categoria atual.
+              .collect(Collectors.toSet()); // Retorna um set com os filmes da categoria atual.
+      result.put(categoria, G); // Adiciona o set com os filmes da categoria atual ao mapa.
+    }
+    return result;
   }
 }

@@ -1,7 +1,8 @@
 package com.trybe.consultafilmes;
 
-import java.util.List;
 // import java.util.Set;
+import java.util.Map;
+import java.util.Set;
 
 public class Principal {
 
@@ -12,7 +13,7 @@ public class Principal {
    */
   public static void main(String[] args) {
     Consultas consultas = new Consultas(Filmes.todos());
-    List<Filme> resultados = consultas.filmesEmQuePeloMenosUmDiretorAtuouMaisRecentesPrimeiro();
+    Map<String, Set<Filme>> resultados = consultas.filmesLancadosNoAnoAgrupadosPorCategoria(2021);
     System.out.println(resultados);
   }
 }

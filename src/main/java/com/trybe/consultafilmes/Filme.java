@@ -45,8 +45,12 @@ public class Filme {
             .collect(Collectors.toUnmodifiableSet());
   }
 
-  public int anoDeLancamento() {
+  public int getAnoDeLancamento() {
     return anoDeLancamento;
+  }
+
+  public Set<String> getCategoria() {
+    return categorias;
   }
 
   /** Retorna os dados do filme. */

@@ -1,6 +1,5 @@
 package com.trybe.consultafilmes;
 
-import static java.util.Collections.emptyList;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -45,12 +44,6 @@ public class Consultas {
     // getKey() -> retorna a chave do par.
     // collect(Collectors.toUnmodifiableSet()) -> retorna um set com os valores.
     // https://medium.com/@racc.costa/streams-no-java-8-e-no-java-9-36177c5c3313
-  }
-
-  public static void main(String[] args) {
-    List<Filme> filmes = emptyList();
-    Consultas consultas = new Consultas(filmes);
-    System.out.println(consultas.atoresQueInterpretaramSiProprios());
   }
 
   /**
@@ -150,12 +143,15 @@ public class Consultas {
     // Percorre a lista de categorias.
     for (String categoria : categorias) {
       // Cria um set vazio para a categoria atual.
-      Set<Filme> G =
+      Set<Filme> filme =
           filmes.stream()
-              .filter(F -> F.anoDeLancamento == ano) // Filtra os filmes do ano atual.
-              .filter(H -> H.categorias.contains(categoria)) // Filtra os filmes da categoria atual.
+              .filter(film -> film.anoDeLancamento == ano) // Filtra os filmes do ano atual.
+              .filter(
+                  category ->
+                      category.categorias.contains(
+                          categoria)) // Filtra os filmes da categoria atual.
               .collect(Collectors.toSet()); // Retorna um set com os filmes da categoria atual.
-      result.put(categoria, G); // Adiciona o set com os filmes da categoria atual ao mapa.
+      result.put(categoria, filme); // Adiciona o set com os filmes da categoria atual ao mapa.
     }
     return result;
   }
